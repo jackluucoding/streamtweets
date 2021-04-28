@@ -6,9 +6,6 @@
   "scripts": {
     "start": "node server/index",
     "dev": "nodemon server/index"
-   }
-
-
   },
   "keywords": [],
   "author": "",
