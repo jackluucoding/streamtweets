@@ -3,17 +3,9 @@ const https = require('https')
 const path = require('path')
 const express = require('express')
 const socketIo = require('socket.io')
-
-//needle is the http client that we use to make a request
 const needle = require('needle')
-
-//to use environement variable
 const config = require('dotenv').config()
-
-//Create token varible 
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
-
-
 const PORT = process.env.PORT || 3000
 
 const app = express()
@@ -25,17 +17,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
 })
 
-//Rule URL
 const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules'
-
-//Tweet stream URL
 const streamURL =
   'https://api.twitter.com/2/tweets/search/stream?tweet.fields=public_metrics&expansions=author_id'
 
-  //array to hold rules/keyword
-// const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogecoin has:image'} ]
-
-const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogefather'}]
+  //array of rules/keyword
+const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}]
 
 // Get stream rules 
 async function getRules() {
@@ -47,8 +34,6 @@ async function getRules() {
   console.log(response.body)
   return response.body
 }
-
-
 
 // Set stream rules
 async function setRules() {
