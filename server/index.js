@@ -33,7 +33,9 @@ const streamURL =
   'https://api.twitter.com/2/tweets/search/stream?tweet.fields=public_metrics&expansions=author_id'
 
   //array to hold rules/keyword
-const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogecoin has:image'} ]
+// const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogecoin has:image'} ]
+
+const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, {value: 'dogefather'}]
 
 // Get stream rules 
 async function getRules() {
