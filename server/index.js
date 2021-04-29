@@ -35,7 +35,7 @@ const streamURL =
   //array to hold rules/keyword
 // const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogecoin has:image'} ]
 
-const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, {value: 'dogefather'}]
+const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}, { value: 'dogefather'}]
 
 // Get stream rules 
 async function getRules() {
