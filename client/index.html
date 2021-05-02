@@ -19,13 +19,15 @@
     <style>
       h4 {
         color: white;
+        align-items: center;
         margin-left: 40px;
       }
 
       p{
         color: black;
-        margin-left: 40px;
-        font-size: 1.5em;
+        align-content: center;
+        /* margin-left: 40px; */
+        /* font-size: 1.5em; */
       }
 
       </style>
@@ -35,31 +37,64 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-light bg-dark">
+    <!-- <nav class="navbar navbar-light bg-dark">
       <div class="container">
         <h4> Real-time Tweets by keywords</h4>
       </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+      <!-- <div class="container-fluid"> -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      <!-- </div> -->
+    </div>
     </nav>
+
+
 
     <div class="container">
       <br><br>
       <form action="/" method="get">
-        <label for="keyword">Keywords:</label><br>
-        <input type="text" id="keyword" name="keyword" value="">
-        <button type="sumbit" class="btn btn-primary">Submit</button>
-        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-success">Start over</button>
+        <!-- <label for="keyword">Keywords:</label><br> -->
+        <input type="text" id="keyword" name="keyword" placeholder="Enter keywords here" size="30" value="">
+        <button type="sumbit" class="btn btn-primary">Go</button>
+        <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Stop</button>
+        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-dark">Start over</button>
       </form>
+
+
+ 
+      <div id="tweetStream"></div>
       <p id="keywords"> </p>
     </div>
 
 
 
 
-    <div class="container">
+    <!-- <div class="container">
 
       <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
       <div id="tweetStream"></div>
-    </div>
+    </div> -->
 
 
 
@@ -124,7 +159,7 @@
         `
 
         tweetStream.appendChild(tweetEl)
-        setTimeout(() => tweetEl.remove(), 5000)
+        setTimeout(() => tweetEl.remove(), 10000)
       })
     </script>
   </body>
