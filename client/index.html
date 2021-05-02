@@ -47,7 +47,7 @@
         <label for="keyword">Keywords:</label><br>
         <input type="text" id="keyword" name="keyword" value="">
         <button type="sumbit" class="btn btn-primary">Submit</button>
-        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-success">Refesh</button>
+        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-success">Start over</button>
       </form>
       <p id="keywords"> </p>
     </div>
@@ -70,7 +70,6 @@
     ></script>
 
     <script>
-      // const ObjectsToCsv = require('objects-to-csv')
       const tweetStream = document.getElementById('tweetStream')
       const urlParams = new URLSearchParams(window.location.search)
       const keyword = urlParams.get('keyword')
@@ -125,9 +124,6 @@
         `
 
         tweetStream.appendChild(tweetEl)
-
-        csv = tweetStream.appendChild(tweetEl)
-
         setTimeout(() => tweetEl.remove(), 5000)
       })
     </script>
