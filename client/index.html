@@ -26,8 +26,6 @@
       p{
         color: black;
         align-content: center;
-        /* margin-left: 40px; */
-        /* font-size: 1.5em; */
       }
 
       </style>
@@ -36,37 +34,14 @@
 
   </head>
   <body>
-
-    <!-- <nav class="navbar navbar-light bg-dark">
-      <div class="container">
-        <h4> Real-time Tweets by keywords</h4>
-      </div>
-    </nav> -->
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-      <!-- <div class="container-fluid"> -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="https://streamtweets.herokuapp.com">Home</a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li> -->
           </ul>
-        </div>
-      <!-- </div> -->
-    </div>
+      </div>
     </nav>
 
 
@@ -74,28 +49,15 @@
     <div class="container">
       <br><br>
       <form action="/" method="get">
-        <!-- <label for="keyword">Keywords:</label><br> -->
         <input type="text" id="keyword" name="keyword" placeholder="Enter keywords here" size="30" value="">
         <button type="sumbit" class="btn btn-primary">Go</button>
         <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
         <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-dark">Start over</button>
       </form>
 
-
- 
       <div id="tweetStream"></div>
       <p id="keywords"> </p>
     </div>
-
-
-
-
-    <!-- <div class="container">
-
-      <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
-      <div id="tweetStream"></div>
-    </div> -->
-
 
 
     <script
@@ -146,12 +108,11 @@
         }
 
         const tweetEl = document.createElement('div')
-        tweetEl.className = 'card my-4'
+        tweetEl.className = 'card my-3'
         tweetEl.innerHTML = `
             <div class="card-body">
                 <h5 class="card-title">${tweetData.text}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">${tweetData.username}</h6>
-                
                 <a class="btn btn-primary mt-3" href="https://twitter.com/${tweetData.username}/status/${tweetData.id}">
                     <i class="fab fa-twitter"></i> Visit the tweet    
                 </a>
@@ -163,4 +124,14 @@
       })
     </script>
   </body>
+  
+
+    <footer>
+      <div class="container"> 
+      <script>
+        document.write("Last Modified: " + document.lastModified);
+      </script>
+    </div>
+  </footer>
+
 </html>
