@@ -47,21 +47,21 @@
         <label for="keyword">Keywords:</label><br>
         <input type="text" id="keyword" name="keyword" value="">
         <button type="sumbit" class="btn btn-primary">Submit</button>
+        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-success">Refesh</button>
       </form>
       <p id="keywords"> </p>
     </div>
 
 
 
+
     <div class="container">
 
       <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
-
-      <button id="" onclick="location.reload()" type="button" class="btn btn-danger">Refesh</button>
-      <div id="tweetStream"></div> <br>
-
-    
+      <div id="tweetStream"></div>
     </div>
+
+
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
