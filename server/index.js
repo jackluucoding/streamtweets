@@ -4,6 +4,7 @@ const path = require('path')
 const express = require('express')
 const socketIo = require('socket.io')
 const needle = require('needle')
+const bodyParser = require('body-parser')
 const config = require('dotenv').config()
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
 const PORT = process.env.PORT || 3000
@@ -13,7 +14,17 @@ const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
 
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
 app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
+})
+
+app.post('/', (req, res) => {
+  console.log("######################################################")
+  console.log(req.body)
   res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
 })
 
@@ -22,7 +33,7 @@ const streamURL =
   'https://api.twitter.com/2/tweets/search/stream?tweet.fields=public_metrics&expansions=author_id'
 
   //array of rules/keyword
-const rules = [{ value: 'dogecoin'}, { value: 'tothemoon'}]
+let rules = []
 
 // Get stream rules 
 async function getRules() {
@@ -31,7 +42,7 @@ async function getRules() {
       Authorization: `Bearer ${TOKEN}`,
     },
   })
-  console.log(response.body)
+  //console.log(response.body)
   return response.body
 }
 
@@ -85,7 +96,7 @@ function streamTweets(socket) {
   stream.on('data', (data) => {
     try {
       const json = JSON.parse(data)
-      console.log(json)
+      //console.log(json)
       socket.emit('tweet', json)
     } catch (error) {}
   })
@@ -93,11 +104,16 @@ function streamTweets(socket) {
   return stream
 }
 
-io.on('connection', async () => {
+io.on('connection', async (socket) => {
   console.log('Client connected...')
 
-  let currentRules
+  const keywords = socket.handshake.query['keyword'].split(' ') // { value: 'dogecoin'}, { value: 'tothemoon'}
+  rules = []
+  for (const keyword of keywords){
+    rules.push({value: keyword})
+  }
 
+  let currentRules
   try {
     //   Get all stream rules
     currentRules = await getRules()

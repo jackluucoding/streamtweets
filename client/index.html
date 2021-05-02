@@ -37,18 +37,25 @@
 
     <nav class="navbar navbar-light bg-dark">
       <div class="container">
-        <h4> Real-time Dogecoin Related Tweets</h4>
-       
+        <h4> Real-time Tweets by keywords</h4>
       </div>
     </nav>
 
     <div class="container">
       <br><br>
-      <p> Current keywords: #dogecoin, #tothemoon</p>
+      <form action="/" method="get">
+        <label for="keyword">Keywords:</label><br>
+        <input type="text" id="keyword" name="keyword" value="">
+        <button type="sumbit" class="btn btn-primary">Submit</button>
+      </form>
+      <p id="keywords"> </p>
     </div>
 
 
+
     <div class="container">
+
+      <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
       <div id="tweetStream"></div>
     </div>
 
@@ -60,15 +67,38 @@
 
     <script>
       const tweetStream = document.getElementById('tweetStream')
-      const socket = io()
+      const urlParams = new URLSearchParams(window.location.search)
+      const keyword = urlParams.get('keyword')
+
+      const keywords = document.getElementById('keywords')
+      let keywordss = keyword.split(' ')
+      keywordss = keywordss.map(k => `#${k}`)
+      keywords.innerHTML = `Current keywords: ${keywordss.join(' ')}`
+
+      const socket = io('', {query: `keyword=${keyword}`})
 
       const tweets = []
-
+      let isPause = false
+      function pauseResumeButton() {
+        const element = document.getElementById("pause-resume")
+        if (element.innerHTML == "Pause") {
+          element.innerHTML = "Resume"
+          element.className = "btn btn-success"
+          isPause = true
+        }
+        else {
+          element.innerHTML = "Pause"
+          element.className = "btn btn-danger"
+          isPause = false
+        }
+      }
       socket.on('connect', () => {
         console.log('Connected to server...')
       })
 
       socket.on('tweet', (tweet) => {
+        if(isPause)
+          return
         // console.log(tweet)
         const tweetData = {
           id: tweet.data.id,
