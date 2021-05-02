@@ -70,6 +70,7 @@
     ></script>
 
     <script>
+      // const ObjectsToCsv = require('objects-to-csv')
       const tweetStream = document.getElementById('tweetStream')
       const urlParams = new URLSearchParams(window.location.search)
       const keyword = urlParams.get('keyword')
@@ -124,6 +125,9 @@
         `
 
         tweetStream.appendChild(tweetEl)
+
+        csv = tweetStream.appendChild(tweetEl)
+
         setTimeout(() => tweetEl.remove(), 5000)
       })
     </script>
