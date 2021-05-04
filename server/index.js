@@ -5,7 +5,9 @@ const express = require('express')
 const socketIo = require('socket.io')
 const needle = require('needle')
 const bodyParser = require('body-parser')
+const ObjectsToCsv = require('objects-to-csv')
 const config = require('dotenv').config()
+
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
 const PORT = process.env.PORT || 3000
 
@@ -13,7 +15,7 @@ const app = express()
 
 const server = http.createServer(app)
 const io = socketIo(server)
-
+let isPaused = false
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -22,9 +24,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
 })
 
+app.get('/file', (req, res) => {
+  const file = path.resolve(__dirname, '../', 'tweets.csv')
+  res.download(file)
+})
+
 app.post('/', (req, res) => {
-  console.log("######################################################")
-  console.log(req.body)
   res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
 })
 
@@ -93,12 +98,30 @@ function streamTweets(socket) {
     },
   })
 
-  stream.on('data', (data) => {
+  stream.on('data', async (data) => {
     try {
       const json = JSON.parse(data)
-      //console.log(json)
+
       socket.emit('tweet', json)
-    } catch (error) {}
+
+      const dataCsv = [
+          { id: json.data.id.toString() ,
+            text: json.data.text.toString(),
+            authorId: json.data.author_id.toString(),
+            retweetCount: json.data.public_metrics.retweet_count.toString(),
+            replyCount: json.data.public_metrics.reply_count.toString(),
+            likeCount: json.data.public_metrics.like_count.toString(),
+            quoteCount: json.data.public_metrics.quote_count.toString(),
+            name: json.includes.users[0].name.toString(),
+            username: json.includes.users[0].username.toString(),
+            created_at: (new Date()).toString(),
+          }]
+
+      const csv = new ObjectsToCsv(dataCsv)
+      await csv.toDisk('./tweets.csv', { append: true })
+    } catch (error) {
+      console.error(error)
+    }
   })
 
   return stream

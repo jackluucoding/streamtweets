@@ -28,6 +28,10 @@
         align-content: center;
       }
 
+      #download-file {
+        visibility: hidden
+      }
+
       </style>
     <title>Real-Time Tweet Stream</title>
 
@@ -53,7 +57,11 @@
         <button type="sumbit" class="btn btn-primary">Go</button>
         <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
         <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-dark">Start over</button>
+        <a href="/file" download>
+          <button id="download-file" type="button" class="btn btn-secondary">Download tweets</button>
+        </a>
       </form>
+
       <p id="keywords"> </p>
 
       <div id="tweetStream"></div>
@@ -83,15 +91,19 @@
       let isPause = false
       function pauseResumeButton() {
         const element = document.getElementById("pause-resume")
+        const downloadButton = document.getElementById("download-file")
         if (element.innerHTML == "Pause") {
           element.innerHTML = "Resume"
           element.className = "btn btn-success"
           isPause = true
+          downloadButton.style.visibility = "visible"
         }
         else {
           element.innerHTML = "Pause"
           element.className = "btn btn-danger"
           isPause = false
+          downloadButton.style.visibility = "hidden"
+
         }
       }
       socket.on('connect', () => {
