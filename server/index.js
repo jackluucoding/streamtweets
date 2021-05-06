@@ -7,6 +7,7 @@ const needle = require('needle')
 const bodyParser = require('body-parser')
 const ObjectsToCsv = require('objects-to-csv')
 const config = require('dotenv').config()
+const fs = require('fs')
 
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
 const PORT = process.env.PORT || 3000
@@ -15,12 +16,15 @@ const app = express()
 
 const server = http.createServer(app)
 const io = socketIo(server)
-let isPaused = false
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
+  try {
+    fs.unlinkSync(path.resolve(__dirname, '../', 'tweets.csv'))
+  }
+  catch (e) {}
   res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
 })
 
@@ -28,11 +32,6 @@ app.get('/file', (req, res) => {
   const file = path.resolve(__dirname, '../', 'tweets.csv')
   res.download(file)
 })
-
-app.post('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../', 'client', 'index.html'))
-})
-
 
 const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules'
 const streamURL =
