@@ -24,69 +24,94 @@
       }
 
       .center {
-  text-align: center;
-}
+        text-align: center;
+      }
 
-
-      p{
+      p {
         color: black;
         align-content: center;
       }
 
       #download-file {
-        visibility: hidden
+        visibility: hidden;
       }
-
-      </style>
+    </style>
     <title>Grabbing the tweets</title>
-
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a style ="color: white;" class="nav-link active" aria-current="page" href="https://streamtweets.herokuapp.com">Home</a>
-            </li>
-            <li class="nav-item">
-              <a style ="color: white;" class="nav-link" aria-current="page" href="https://jackluu.io/ " target="_blank">About us</a>
-            </li>
-          </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              style="color: white;"
+              class="nav-link active"
+              aria-current="page"
+              href="https://streamtweets.herokuapp.com"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              style="color: white;"
+              class="nav-link"
+              aria-current="page"
+              href="https://jackluu.io/ "
+              target="_blank"
+              >About us</a
+            >
+          </li>
+        </ul>
       </div>
     </nav>
 
     <div class="center">
       <img
-        src="https://cdn.glitch.com/f6c19d8a-b040-47c0-8973-cd2982cf645b%2Flogo.png?v=1616627303505"
-        alt="Dots logo"
+        src="https://s3.us-east-2.amazonaws.com/www.jackluu.io/files/LOGO.png"
+        alt="logo"
         width="200"
         height="200"
       />
     </div>
 
-
     <div class="center">
-    <!-- <div class="container"> -->
-      <br><br>
-
+      <br /><br />
 
       <form action="/" method="get">
-        <input type="text" id="keyword" name="keyword" placeholder="Enter keywords here" size="20" value=""> 
+        <input
+          type="text"
+          id="keyword"
+          name="keyword"
+          placeholder="Enter keywords here"
+          size="20"
+          value=""
+        />
         <button type="sumbit" class="btn btn-primary">Go</button>
-        <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
-        <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-dark">Start over</button>
+        <button
+          id="pause-resume"
+          onclick="pauseResumeButton()"
+          type="button"
+          class="btn btn-danger"
+        >
+          Pause
+        </button>
+        <button
+          onclick="location.href='https://streamtweets.herokuapp.com/';"
+          type="button"
+          class="btn btn-dark"
+        >
+          Start over
+        </button>
         <a href="/file" download>
-          <button id="download-file" type="button" class="btn btn-secondary">Download tweets</button>
+          <button id="download-file" type="button" class="btn btn-secondary">
+            Download tweets
+          </button>
         </a>
       </form>
 
-      <p id="keywords"> </p>
+      <p id="keywords"></p>
       <div id="tweetStream"></div>
-
-    <!-- </div> -->
-  </div>
-
-
+    </div>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
@@ -95,52 +120,49 @@
     ></script>
 
     <script>
-      const tweetStream = document.getElementById('tweetStream')
-      const urlParams = new URLSearchParams(window.location.search)
-      const keyword = urlParams.get('keyword')
+      const tweetStream = document.getElementById("tweetStream");
+      const urlParams = new URLSearchParams(window.location.search);
+      const keyword = urlParams.get("keyword");
 
-      const keywords = document.getElementById('keywords')
-      let keywordss = keyword.split(' ')
-      keywordss = keywordss.map(k => `#${k}`)
-      keywords.innerHTML = `Current keywords: ${keywordss.join(' ')}`
+      const keywords = document.getElementById("keywords");
+      let keywordss = keyword.split(" ");
+      keywordss = keywordss.map(k => `#${k}`);
+      keywords.innerHTML = `Current keywords: ${keywordss.join(" ")}`;
 
-      const socket = io('', {query: `keyword=${keyword}`})
+      const socket = io("", { query: `keyword=${keyword}` });
 
-      const tweets = []
-      let isPause = false
+      const tweets = [];
+      let isPause = false;
       function pauseResumeButton() {
-        const element = document.getElementById("pause-resume")
-        const downloadButton = document.getElementById("download-file")
+        const element = document.getElementById("pause-resume");
+        const downloadButton = document.getElementById("download-file");
         if (element.innerHTML == "Pause") {
-          element.innerHTML = "Resume"
-          element.className = "btn btn-success"
-          isPause = true
-          downloadButton.style.visibility = "visible"
-        }
-        else {
-          element.innerHTML = "Pause"
-          element.className = "btn btn-danger"
-          isPause = false
-          downloadButton.style.visibility = "hidden"
-
+          element.innerHTML = "Resume";
+          element.className = "btn btn-success";
+          isPause = true;
+          downloadButton.style.visibility = "visible";
+        } else {
+          element.innerHTML = "Pause";
+          element.className = "btn btn-danger";
+          isPause = false;
+          downloadButton.style.visibility = "hidden";
         }
       }
-      socket.on('connect', () => {
-        console.log('Connected to server...')
-      })
+      socket.on("connect", () => {
+        console.log("Connected to server...");
+      });
 
-      socket.on('tweet', (tweet) => {
-        if(isPause)
-          return
+      socket.on("tweet", tweet => {
+        if (isPause) return;
         // console.log(tweet)
         const tweetData = {
           id: tweet.data.id,
           text: tweet.data.text,
-          username: `@${tweet.includes.users[0].username}`,
-        }
+          username: `@${tweet.includes.users[0].username}`
+        };
 
-        const tweetEl = document.createElement('div')
-        tweetEl.className = 'card my-3'
+        const tweetEl = document.createElement("div");
+        tweetEl.className = "card my-3";
         tweetEl.innerHTML = `
             <div class="card-body">
                 <h5 class="card-title">${tweetData.text}</h5>
@@ -149,52 +171,58 @@
                     <i class="fab fa-twitter"></i> Visit the tweet    
                 </a>
             </div>
-        `
-        
-        tweetStream.appendChild(tweetEl)
-        setTimeout(() => tweetEl.remove(), 10000)
-      })
+        `;
+
+        tweetStream.appendChild(tweetEl);
+        setTimeout(() => tweetEl.remove(), 10000);
+      });
     </script>
   </body>
 
-  <br> <br> <br>
+  <br />
+  <br />
+  <br />
   <div class="footer-dark">
     <footer>
-        <div class="container">
-          <hr>
-            <div class="row">
-                <div class="col-sm-6 col-md-3 item">
-                    <h3>Features</h3>
-                    <ul>
-                        <li>Streaming tweets by keywords</li>
-                        <li>Download the results</li>
-                    </ul>
-                </div>
-                <div class="col-sm-6 col-md-3 item">
-                    <h3>About</h3>
-                    <ul>
-                        <li><a href="https://github.com/jackluucoding/streamtweets"  target="_blank">See the codes</a></li>
-                        <li><a href="https://developer.twitter.com/en/docs/twitter-api/v1"  target="_blank" >About Twitter API</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-6 item text">
-                    <h3>Grabbing the tweets</h3>
-                    <p> Grabbing the tweets is an application developed at Illinois State University, Normal, Illinois. It provides real-time tweets based on keyword(s) using cloud-based server. </p>
-                </div>
-                <div class="col item social"><a href="https://www.facebook.com/" target="_blank"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
-            </div>    
-            </div>            
-
-  </footer>
+      <div class="container">
+        <hr />
+        <div class="row">
+          <div class="col-sm-6 col-md-3 item">
+            <h3>Features</h3>
+            <ul>
+              <li>Streaming tweets by keywords</li>
+              <li>Download the results</li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-md-3 item">
+            <h3>About</h3>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/jackluucoding/streamtweets"
+                  target="_blank"
+                  >See the codes</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://developer.twitter.com/en/docs/twitter-api/v1"
+                  target="_blank"
+                  >About Twitter API</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 item text">
+            <h3>Grabbing the tweets</h3>
+            <p>
+              Grabbing the tweets is an application developed at Illinois State
+              University, Normal, Illinois. It provides real-time tweets based
+              on keyword(s) using cloud-based server.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
-  
-
-    <!-- <footer>
-      <div class="container"> 
-      <script>
-        document.write("Last Modified: " + document.lastModified);
-      </script>
-    </div>
-  </footer> -->
-
 </html>
