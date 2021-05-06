@@ -23,6 +23,11 @@
         margin-left: 40px;
       }
 
+      .center {
+  text-align: center;
+}
+
+
       p{
         color: black;
         align-content: center;
@@ -50,10 +55,23 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="center">
+      <img
+        src="https://cdn.glitch.com/f6c19d8a-b040-47c0-8973-cd2982cf645b%2Flogo.png?v=1616627303505"
+        alt="Dots logo"
+        width="200"
+        height="200"
+      />
+    </div>
+
+
+    <div class="center">
+    <!-- <div class="container"> -->
       <br><br>
+
+
       <form action="/" method="get">
-        <input type="text" id="keyword" name="keyword" placeholder="Enter keywords here" size="20" value="">
+        <input type="text" id="keyword" name="keyword" placeholder="Enter keywords here" size="20" value=""> 
         <button type="sumbit" class="btn btn-primary">Go</button>
         <button id="pause-resume" onclick="pauseResumeButton()" type="button" class="btn btn-danger">Pause</button>
         <button onclick="location.href='https://streamtweets.herokuapp.com/';" type="button" class="btn btn-dark">Start over</button>
@@ -63,10 +81,11 @@
       </form>
 
       <p id="keywords"> </p>
-
       <div id="tweetStream"></div>
 
-    </div>
+    <!-- </div> -->
+  </div>
+
 
 
     <script
